@@ -1,11 +1,4 @@
-<?php 
-include 'koneksi.php';
-
-// Test koneksi database
-if (!$koneksi) {
-    die("Koneksi database gagal: " . mysqli_connect_error());
-}
-?>
+<?php include 'koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,3 +102,4 @@ if (!$koneksi) {
     </div>
 </body>
 </html>
+>>>>>>> 82cc10f0fb93b8047af80a0a070cc4c7905801a0
