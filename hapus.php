@@ -1,5 +1,13 @@
 <?php
+session_start();
 include 'koneksi.php';
+include 'auth_check.php';
+
+// Only admin can delete
+if (!isAdmin()) {
+    echo "<script>alert('Access Denied! Only admin can delete data.'); window.location.href='index.php';</script>";
+    exit;
+}
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = mysqli_real_escape_string($koneksi, $_GET['id']);

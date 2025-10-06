@@ -1,4 +1,14 @@
-<?php include 'koneksi.php'; ?>
+<?php 
+session_start();
+include 'koneksi.php'; 
+include 'auth_check.php';
+
+// Only admin can access this page
+if (!isAdmin()) {
+    echo "<script>alert('Access Denied! Only admin can add data.'); window.location.href='index.php';</script>";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

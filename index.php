@@ -1,4 +1,8 @@
-<?php include 'koneksi.php'; ?>
+<?php 
+session_start();
+include 'koneksi.php'; 
+include 'auth_check.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +12,27 @@
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center py-10">
     <div class="w-full max-w-6xl bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">📦 Data Barang & Supplier</h2>
+        <!-- Header with User Info -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-blue-600">📦 Data Barang & Supplier</h2>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Welcome, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
+                    <p class="text-xs text-gray-500">
+                        Role: <span class="px-2 py-1 rounded <?php echo isAdmin() ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'; ?>">
+                            <?php echo strtoupper($_SESSION['role']); ?>
+                        </span>
+                    </p>
+                </div>
+                <a href="logout.php" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</a>
+            </div>
+        </div>
         
+        <?php if (isAdmin()): ?>
         <div class="mb-4 text-right">
             <a href="tambah.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">+ Tambah Barang</a>
         </div>
+        <?php endif; ?>
 
         <?php
         // Cek apakah tabel dan kolom ada
@@ -56,7 +76,9 @@
                         <?php if ($has_hp): ?>
                         <th class="px-4 py-2 text-left">No HP Supplier</th>
                         <?php endif; ?>
+                        <?php if (isAdmin()): ?>
                         <th class="px-4 py-2 text-center">Aksi</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,10 +106,13 @@
                             if ($has_hp) {
                                 echo "<td class='px-4 py-2'>" . htmlspecialchars($no_hp_supplier) . "</td>";
                             }
-                            echo "<td class='px-4 py-2 text-center'>";
-                            echo "<a href='ubah.php?id={$row['id_barang']}' class='text-yellow-500 hover:underline mr-3'>Ubah</a>";
-                            echo "<a href='hapus.php?id={$row['id_barang']}' class='text-red-500 hover:underline' onclick='return confirm(\"Yakin ingin menghapus?\")'>Hapus</a>";
-                            echo "</td>";
+                            
+                            if (isAdmin()) {
+                                echo "<td class='px-4 py-2 text-center'>";
+                                echo "<a href='ubah.php?id={$row['id_barang']}' class='text-yellow-500 hover:underline mr-3'>Ubah</a>";
+                                echo "<a href='hapus.php?id={$row['id_barang']}' class='text-red-500 hover:underline' onclick='return confirm(\"Yakin ingin menghapus?\")'>Hapus</a>";
+                                echo "</td>";
+                            }
                             echo "</tr>";
                         }
                     }
@@ -98,8 +123,10 @@
         
         <div class="mt-4 text-sm text-gray-600">
             <p>Total data: <?php echo mysqli_num_rows($result); ?> barang</p>
+            <?php if (isUser()): ?>
+            <p class="text-yellow-600 mt-2">ℹ️ Anda login sebagai User (hanya dapat melihat data)</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>
 </html>
->>>>>>> 82cc10f0fb93b8047af80a0a070cc4c7905801a0
