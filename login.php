@@ -15,24 +15,22 @@ if (isset($_POST['login'])) {
     $username = mysqli_real_escape_string($koneksi, $_POST['username']);
     $password = $_POST['password'];
     
-    $query = "SELECT * FROM users WHERE username = '$username'";
+    // Hash password with MD5
+    $password_md5 = md5($password);
+    
+    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password_md5'";
     $result = mysqli_query($koneksi, $query);
     
     if ($result && mysqli_num_rows($result) == 1) {
         $user = mysqli_fetch_assoc($result);
         
-        // Verify password
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['logged_in'] = true;
-            $_SESSION['user_id'] = $user['id_user'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-            
-            header("Location: index.php");
-            exit;
-        } else {
-            $error = "Username atau password salah!";
-        }
+        $_SESSION['logged_in'] = true;
+        $_SESSION['user_id'] = $user['id_user'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        
+        header("Location: index.php");
+        exit;
     } else {
         $error = "Username atau password salah!";
     }
@@ -83,7 +81,7 @@ if (isset($_POST['login'])) {
         <div class="mt-6 p-4 bg-gray-50 rounded-lg">
             <p class="text-sm text-gray-600 font-semibold mb-2">Default Credentials:</p>
             <p class="text-xs text-gray-500">Admin: username=<strong>admin</strong>, pass=<strong>admin123</strong></p>
-            <p class="text-xs text-gray-500">User: username=<strong>user</strong>, pass=<strong>admin123</strong></p>
+            <p class="text-xs text-gray-500">User: username=<strong>user</strong>, pass=<strong>user123</strong></p>
         </div>
     </div>
 </body>
