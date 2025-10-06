@@ -75,12 +75,6 @@ if (isset($_POST['login'])) {
                 Login
             </button>
         </form>
-        
-        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p class="text-sm text-gray-600 font-semibold mb-2">Default Credentials:</p>
-            <p class="text-xs text-gray-500">Admin: username=<strong>admin</strong>, pass=<strong>admin123</strong></p>
-            <p class="text-xs text-gray-500">User: username=<strong>user</strong>, pass=<strong>user123</strong></p>
-        </div>
     </div>
 </body>
 </html>
