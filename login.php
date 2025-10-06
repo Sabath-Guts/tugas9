@@ -13,12 +13,10 @@ $error = '';
 
 if (isset($_POST['login'])) {
     $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = $_POST['password'];
+    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
     
-    // Hash password with MD5
-    $password_md5 = md5($password);
-    
-    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password_md5'";
+    // Simple plain text password check
+    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     $result = mysqli_query($koneksi, $query);
     
     if ($result && mysqli_num_rows($result) == 1) {
